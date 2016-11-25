@@ -2,15 +2,13 @@ package com.example.android.ownsudoku;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -22,64 +20,100 @@ public class MainActivity extends AppCompatActivity {
     Button[] numberPad;
     Button btn_del;
 
+    public static final String easyQuestion = "2500010040700052";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         setUpUI();
-        getTextFromAllTV();
+        setTextViewOnClick();
 
     }
 
-    private void setUpUI(){
+    private void setUpUI() {
         bindTextViews();
         bindNumberButtons();
+        setUpQuestions(easyQuestion);
     }
 
-    private void getTextFromAllTV() {
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 4; j++) {
-                if (cell != null){
-                    final TextView curCell = cell[i][j];
-                    curCell.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            String selectedNum = (String) tv_selectedNum.getText();
-                            if (selectedNum.equals("Del"))
-                                selectedNum = "";
-                            curCell.setText(selectedNum);
+
+    //the question should be from top to the bottom, from left to right
+    private void setUpQuestions(String question) {
+        //get each char of the given question using a for loop
+        //the question must be of length 16 because this is a 4x4 sudoku
+        if (question.length() != 16) {
+            Log.d("MainActivity", "The question must be of the length 16.");
+            return;
+        }
+
+        if (cell != null) {
+            for (int i = 0; i < question.length(); i++) {
+                int curNum = Integer.parseInt(String.valueOf(question.charAt(i)));
+                //set up the question
+                //set the clickable of the textViews having default numbers false to prevent changing its content
+                int row = i / 4;
+                int col = i % 4;
+                if (curNum != 0) {
+                    TextView curCell = cell[row][col];
+                    logCat(row+","+col);
+                    curCell.setText(curNum+"");
+                    curCell.setTypeface(null, Typeface.BOLD);
+                    curCell.setOnClickListener(null);
+                }else{
+                        final TextView curCell = cell[row][col];
+                        curCell.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                String selectedNum = (String) tv_selectedNum.getText();
+                                if (selectedNum.equals("Del"))
+                                    selectedNum = "";
+                                curCell.setText(selectedNum);
+                                curCell.setTextColor(Color.GRAY);
 //                            curCell.setBackgroundColor(Color.GRAY);
 //                            Toast.makeText(MainActivity.this, curCell.getText(), Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                            }
+                        });
+
                 }
+
+            }
+        } else {
+            Log.w("MainActivity", "Please bind the textViews first.");
+        }
+    }
+
+    private void setTextViewOnClick() {
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+
             }
         }
     }
 
-    private void bindNumberButtons(){
+    private void bindNumberButtons() {
         btn_del = (Button) findViewById(R.id.btn_del);
         int numberOfButtons = 4;
         numberPad = new Button[numberOfButtons];
-        for (int i = 0;i<numberOfButtons;i++){
-            String buttonName = "btn_num_"+(i+1);
-            int id = getStringIdentifier(this,buttonName);
-            logCat("Button id: "+id);
+        for (int i = 0; i < numberOfButtons; i++) {
+            String buttonName = "btn_num_" + (i + 1);
+            int id = getStringIdentifier(this, buttonName);
+//            logCat("Button id: " + id);
             numberPad[i] = (Button) findViewById(id);
         }
         setOnClickForNumberButtons();
     }
 
-    private void setOnClickForNumberButtons(){
+    private void setOnClickForNumberButtons() {
         btn_del.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 tv_selectedNum.setText("Del");
             }
         });
-        if (numberPad!=null){
-            for (int i = 0;i<numberPad.length;i++){
+        if (numberPad != null) {
+            for (int i = 0; i < numberPad.length; i++) {
                 final Button curButton = numberPad[i];
                 curButton.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -98,15 +132,15 @@ public class MainActivity extends AppCompatActivity {
         cell = new TextView[4][4];
         for (int row = 0; row < 4; row++) {
             for (int col = 0; col < 4; col++) {
-                logCat(row + "," + col);
-                String textViewName = "cell" + (row+1) + (col+1);
+//                logCat(row + "," + col);
+                String textViewName = "cell" + (row + 1) + (col + 1);
                 String textViewId = "R.id." + textViewName;
                 int id = getStringIdentifier(this, textViewName);
-                logCat("id "+ row+col+": "+id);
+//                logCat("id " + row + col + ": " + id);
                 if (cell != null) {
                     cell[row][col] = (TextView) findViewById(id);
                     cell[row][col].setText("");
-                    logCat("success: "+row+","+col);
+//                    logCat("success: " + row + "," + col);
                 }
             }
         }
