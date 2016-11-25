@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -19,6 +20,8 @@ public class MainActivity extends AppCompatActivity {
     //Buttons for the number pad
     Button[] numberPad;
     Button btn_del;
+
+
 
     public static final String easyQuestion = "1040040000200203";
 
@@ -72,8 +75,12 @@ public class MainActivity extends AppCompatActivity {
                                 selectedNum = "";
                             curCell.setText(selectedNum);
                             curCell.setTextColor(Color.GRAY);
-                            isRowValid(row, col);
-                            isColValid(row, col);
+                            boolean isRowValid = isRowValid(row, col);
+                            boolean isColValid = isColValid(row, col);
+                            //the player wins
+                            if (isTheLasCell() && isColValid && isRowValid)
+                                Toast.makeText(MainActivity.this, "Congratz! All correct!", Toast.LENGTH_LONG).show();
+
 //                            curCell.setBackgroundColor(Color.GRAY);
 //                            Toast.makeText(MainActivity.this, curCell.getText(), Toast.LENGTH_SHORT).show();
                         }
@@ -95,11 +102,59 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    //to check if there is only one blank cell
+    private boolean isTheLasCell() {
+        int blankCellCounter = 0;
+        boolean isOneCellLeft = false;
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                if (cell[i][j].getText().equals(""))
+                    blankCellCounter++;
+            }
+        }
+        if (blankCellCounter == 0) {
+            isOneCellLeft = true;
+
+        }
+        logCat("Number of blank cell: "+ blankCellCounter);
+        return isOneCellLeft;
+    }
+
+    private boolean isLocalValid(int curRow, int curCol) {
+        boolean isLocalValid = true;
+        TextView cellJustEditted = cell[curRow][curCol];
+
+
+        for (int j = 0; j < 4; j++) {
+            //skip checking itself with itself
+            if (j == curCol) {
+//                logCat("itself: " + curRow + "," + j);
+                continue;
+            } else {
+                TextView cellToBeCheck = cell[curRow][j];
+                //skip checking the blank cells
+                if (cellToBeCheck.equals("")) {
+                    logCat("blank cell: " + curRow + "," + j);
+                    continue;
+                } else if (cellJustEditted.getText().equals(cellToBeCheck.getText())) {
+                    isLocalValid = false;
+                    cellJustEditted.setTextColor(Color.RED);
+                    cellToBeCheck.setTextColor(Color.RED);
+
+                } else {
+                    cellToBeCheck.setTextColor(Color.BLACK);
+                }
+            }
+        }
+
+
+        return isLocalValid;
+    }
+
 
     private boolean isRowValid(int curRow, int curCol) {
         boolean isRowValid = true;
         TextView cellJustEditted = cell[curRow][curCol];
-
         for (int j = 0; j < 4; j++) {
             //skip checking itself with itself
             if (j == curCol) {
