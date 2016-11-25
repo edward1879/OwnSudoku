@@ -11,6 +11,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Random;
+
 public class MainActivity extends AppCompatActivity {
 
     //TextView for the cells
@@ -22,8 +24,9 @@ public class MainActivity extends AppCompatActivity {
     Button btn_del;
 
 
-    public static final String[] easyQuestion = {"1040040000200203"};
-    public static final String[] hardQuestion = {"2003004002001000"};
+    public static final String[] easyQuestion = {"1040040000200203", "1030000140000204",};
+    public static final String[] hardQuestion = {"2003004002001000", "0030000140000240", "0400103000030020",
+            "0403002001004000", "1000030200200004", "0040010310000200", "3004040000100002"};
 
 
     @Override
@@ -32,14 +35,24 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         setUpUI();
-        setTextViewOnClick();
+
 
     }
 
     private void setUpUI() {
         bindTextViews();
         bindNumberButtons();
-        setUpQuestions(hardQuestion[0]);
+        setUpQuestions(getRandomQuestion(hardQuestion));
+        setTextViewOnClick();
+    }
+
+    private String getRandomQuestion(String[] difficultyOfQuestion) {
+        Random random = new Random();
+        //50 is the maximum and the 1 is our minimum
+        int n = random.nextInt(50) + 1;
+        n%=difficultyOfQuestion.length;
+        logCat("random number: "+ n);
+        return difficultyOfQuestion[n];
     }
 
 
