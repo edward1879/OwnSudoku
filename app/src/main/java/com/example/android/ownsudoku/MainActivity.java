@@ -1,6 +1,7 @@
 package com.example.android.ownsudoku;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
@@ -23,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
     Button[] numberPad;
     Button btn_del;
 
-
+    Button btn_refresh;
     public static final String[] easyQuestion = {"1040040000200203", "1030000140000204",};
     public static final String[] hardQuestion = {"2003004002001000", "0030000140000240", "0400103000030020",
             "0403002001004000", "1000030200200004", "0040010310000200", "3004040000100002"};
@@ -50,8 +51,8 @@ public class MainActivity extends AppCompatActivity {
         Random random = new Random();
         //50 is the maximum and the 1 is our minimum
         int n = random.nextInt(50) + 1;
-        n%=difficultyOfQuestion.length;
-        logCat("random number: "+ n);
+        n %= difficultyOfQuestion.length;
+        logCat("random number: " + n);
         return difficultyOfQuestion[n];
     }
 
@@ -269,6 +270,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void bindNumberButtons() {
+        btn_refresh = (Button) findViewById(R.id.btn_refresh);
+        btn_refresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                Intent intent = getIntent();
+//                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+//                finish();
+//                startActivity(intent);
+                setUpUI();
+
+
+            }
+        });
         btn_del = (Button) findViewById(R.id.btn_del);
         int numberOfButtons = 4;
         numberPad = new Button[numberOfButtons];
@@ -316,6 +330,8 @@ public class MainActivity extends AppCompatActivity {
                 if (cell != null) {
                     cell[row][col] = (TextView) findViewById(id);
                     cell[row][col].setText("");
+                    cell[row][col].setTextColor(Color.BLACK);
+
 //                    logCat("success: " + row + "," + col);
                 }
             }
