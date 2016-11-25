@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
     Button[] numberPad;
     Button btn_del;
 
-    public static final String easyQuestion = "2500010040700052";
+    public static final String easyQuestion = "1040040000200203";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,28 +53,31 @@ public class MainActivity extends AppCompatActivity {
                 int curNum = Integer.parseInt(String.valueOf(question.charAt(i)));
                 //set up the question
                 //set the clickable of the textViews having default numbers false to prevent changing its content
-                int row = i / 4;
-                int col = i % 4;
+                final int row = i / 4;
+                final int col = i % 4;
                 if (curNum != 0) {
                     TextView curCell = cell[row][col];
-                    logCat(row+","+col);
-                    curCell.setText(curNum+"");
+                    logCat(row + "," + col);
+                    curCell.setText(curNum + "");
                     curCell.setTypeface(null, Typeface.BOLD);
                     curCell.setOnClickListener(null);
-                }else{
-                        final TextView curCell = cell[row][col];
-                        curCell.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                String selectedNum = (String) tv_selectedNum.getText();
-                                if (selectedNum.equals("Del"))
-                                    selectedNum = "";
-                                curCell.setText(selectedNum);
-                                curCell.setTextColor(Color.GRAY);
+                } else {
+                    //set onClickListener to all the blank cells
+                    final TextView curCell = cell[row][col];
+                    curCell.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            String selectedNum = (String) tv_selectedNum.getText();
+                            if (selectedNum.equals("Del"))
+                                selectedNum = "";
+                            curCell.setText(selectedNum);
+                            curCell.setTextColor(Color.GRAY);
+                            isRowValid(row, col);
+                            isColValid(row, col);
 //                            curCell.setBackgroundColor(Color.GRAY);
 //                            Toast.makeText(MainActivity.this, curCell.getText(), Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                        }
+                    });
 
                 }
 
@@ -90,6 +93,65 @@ public class MainActivity extends AppCompatActivity {
 
             }
         }
+    }
+
+
+    private boolean isRowValid(int curRow, int curCol) {
+        boolean isRowValid = true;
+        TextView cellJustEditted = cell[curRow][curCol];
+
+        for (int j = 0; j < 4; j++) {
+            //skip checking itself with itself
+            if (j == curCol) {
+                logCat("itself: " + curRow + "," + j);
+                continue;
+            } else {
+                TextView cellToBeCheck = cell[curRow][j];
+                //skip checking the blank cells
+                if (cellToBeCheck.equals("")) {
+                    logCat("blank cell: " + curRow + "," + j);
+                    continue;
+                } else if (cellJustEditted.getText().equals(cellToBeCheck.getText())) {
+                    isRowValid = false;
+                    cellJustEditted.setTextColor(Color.RED);
+                    cellToBeCheck.setTextColor(Color.RED);
+
+                } else {
+                    cellToBeCheck.setTextColor(Color.BLACK);
+                }
+            }
+        }
+
+        return isRowValid;
+    }
+
+    private boolean isColValid(int curRow, int curCol) {
+        boolean isColValid = true;
+        TextView cellJustEditted = cell[curRow][curCol];
+
+        for (int i = 0; i < 4; i++) {
+            //skip checking itself with itself
+            if (i == curRow) {
+                logCat("itself: " + i + "," + curCol);
+                continue;
+            } else {
+                TextView cellToBeCheck = cell[i][curCol];
+                //skip checking the blank cells
+                if (cellToBeCheck.equals("")) {
+                    logCat("blank cell: " + i + "," + curCol);
+                    continue;
+                } else if (cellJustEditted.getText().equals(cellToBeCheck.getText())) {
+                    isColValid = false;
+                    cellJustEditted.setTextColor(Color.RED);
+                    cellToBeCheck.setTextColor(Color.RED);
+
+                } else {
+                    cellToBeCheck.setTextColor(Color.BLACK);
+                }
+            }
+        }
+
+        return isColValid;
     }
 
     private void bindNumberButtons() {
