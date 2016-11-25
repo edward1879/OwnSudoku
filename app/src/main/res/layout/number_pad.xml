@@ -30,6 +30,12 @@
             android:id="@+id/btn_num_4"
             android:text="4" />
 
+        <Button
+            style="@style/NumberPadButton"
+            android:id="@+id/btn_del"
+            android:text="Del"
+            />
+
 
 
     </LinearLayout>

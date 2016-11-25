@@ -20,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
     TextView tv_selectedNum;
     //Buttons for the number pad
     Button[] numberPad;
+    Button btn_del;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void onClick(View view) {
                             String selectedNum = (String) tv_selectedNum.getText();
+                            if (selectedNum.equals("Del"))
+                                selectedNum = "";
                             curCell.setText(selectedNum);
 //                            curCell.setBackgroundColor(Color.GRAY);
 //                            Toast.makeText(MainActivity.this, curCell.getText(), Toast.LENGTH_SHORT).show();
@@ -56,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void bindNumberButtons(){
+        btn_del = (Button) findViewById(R.id.btn_del);
         int numberOfButtons = 4;
         numberPad = new Button[numberOfButtons];
         for (int i = 0;i<numberOfButtons;i++){
@@ -68,6 +72,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setOnClickForNumberButtons(){
+        btn_del.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                tv_selectedNum.setText("Del");
+            }
+        });
         if (numberPad!=null){
             for (int i = 0;i<numberPad.length;i++){
                 final Button curButton = numberPad[i];
