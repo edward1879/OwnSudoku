@@ -22,7 +22,6 @@ public class MainActivity extends AppCompatActivity {
     Button btn_del;
 
 
-
     public static final String easyQuestion = "1040040000200203";
 
     @Override
@@ -77,8 +76,9 @@ public class MainActivity extends AppCompatActivity {
                             curCell.setTextColor(Color.GRAY);
                             boolean isRowValid = isRowValid(row, col);
                             boolean isColValid = isColValid(row, col);
+                            boolean isLocalValid = isLocalValid(row, col);
                             //the player wins
-                            if (isTheLasCell() && isColValid && isRowValid)
+                            if (isTheLastCell() && isColValid && isRowValid)
                                 Toast.makeText(MainActivity.this, "Congratz! All correct!", Toast.LENGTH_LONG).show();
 
 //                            curCell.setBackgroundColor(Color.GRAY);
@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //to check if there is only one blank cell
-    private boolean isTheLasCell() {
+    private boolean isTheLastCell() {
         int blankCellCounter = 0;
         boolean isOneCellLeft = false;
         for (int i = 0; i < 4; i++) {
@@ -116,45 +116,89 @@ public class MainActivity extends AppCompatActivity {
             isOneCellLeft = true;
 
         }
-        logCat("Number of blank cell: "+ blankCellCounter);
+        logCat("Number of blank cell: " + blankCellCounter);
         return isOneCellLeft;
     }
 
     private boolean isLocalValid(int curRow, int curCol) {
         boolean isLocalValid = true;
-        TextView cellJustEditted = cell[curRow][curCol];
+        TextView cellJustEdited = cell[curRow][curCol];
 
+        boolean isUpperPart = curRow < 2;
+        boolean isLeftPart = curCol < 2;
+        int quadrant = 1;
+        //quadrant1 = upperLeft, quadrant2 = upperRight, quadrant3 = bottomLeft, quadrant4 = bottomRight
+        if (isUpperPart && isLeftPart) {
+            quadrant = 1;
+            logCat("upperLeft");
+        } else if (isUpperPart && !isLeftPart) {
+            quadrant = 2;
+            logCat("upperRight");
+        } else if (!isUpperPart && isLeftPart) {
+            quadrant = 3;
+            logCat("bottomLeft");
+        } else {
+            quadrant = 4;
+            logCat("bottomRight");
+        }
 
-        for (int j = 0; j < 4; j++) {
-            //skip checking itself with itself
-            if (j == curCol) {
+        int rowStart = 0, colStart = 0, rowBoundary = 0, colBoundary = 0;
+        switch (quadrant) {
+            case 1:
+                rowStart = 0;
+                colStart = 0;
+                rowBoundary = 2;
+                colBoundary = 2;
+                break;
+            case 2:
+                rowStart = 0;
+                colStart = 2;
+                rowBoundary = 2;
+                colBoundary = 4;
+                break;
+            case 3:
+                rowStart = 2;
+                colStart = 0;
+                rowBoundary = 4;
+                colBoundary = 2;
+                break;
+            case 4:
+                rowStart = 2;
+                colStart = 2;
+                rowBoundary = 4;
+                colBoundary = 4;
+                break;
+        }
+        for (int i = rowStart; i < rowBoundary; i++) {
+            for (int j = colStart; j < colBoundary; j++) {
+                //skip checking itself with itself
+                if (i == curRow && j == curCol) {
 //                logCat("itself: " + curRow + "," + j);
-                continue;
-            } else {
-                TextView cellToBeCheck = cell[curRow][j];
-                //skip checking the blank cells
-                if (cellToBeCheck.equals("")) {
-                    logCat("blank cell: " + curRow + "," + j);
                     continue;
-                } else if (cellJustEditted.getText().equals(cellToBeCheck.getText())) {
-                    isLocalValid = false;
-                    cellJustEditted.setTextColor(Color.RED);
-                    cellToBeCheck.setTextColor(Color.RED);
-
                 } else {
-                    cellToBeCheck.setTextColor(Color.BLACK);
+                    TextView cellToBeCheck = cell[i][j];
+                    //skip checking the blank cells
+                    if (cellToBeCheck.equals("")) {
+                        logCat("blank cell: " + i + "," + j);
+                        continue;
+                    } else if (cellJustEdited.getText().equals(cellToBeCheck.getText())) {
+                        isLocalValid = false;
+                        cellJustEdited.setTextColor(Color.RED);
+                        cellToBeCheck.setTextColor(Color.RED);
+
+                    } else {
+                        cellToBeCheck.setTextColor(Color.BLACK);
+                    }
                 }
             }
         }
-
-
         return isLocalValid;
     }
 
 
     private boolean isRowValid(int curRow, int curCol) {
         boolean isRowValid = true;
-        TextView cellJustEditted = cell[curRow][curCol];
+        TextView cellJustEdited = cell[curRow][curCol];
         for (int j = 0; j < 4; j++) {
             //skip checking itself with itself
             if (j == curCol) {
@@ -166,9 +210,9 @@ public class MainActivity extends AppCompatActivity {
                 if (cellToBeCheck.equals("")) {
                     logCat("blank cell: " + curRow + "," + j);
                     continue;
-                } else if (cellJustEditted.getText().equals(cellToBeCheck.getText())) {
+                } else if (cellJustEdited.getText().equals(cellToBeCheck.getText())) {
                     isRowValid = false;
-                    cellJustEditted.setTextColor(Color.RED);
+                    cellJustEdited.setTextColor(Color.RED);
                     cellToBeCheck.setTextColor(Color.RED);
 
                 } else {
