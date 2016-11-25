@@ -1,10 +1,13 @@
 package com.example.android.ownsudoku;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -26,8 +29,16 @@ public class MainActivity extends AppCompatActivity {
     private void getTextFromAllTV() {
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
-                if (cell != null)
-                    Log.d("MainActivity", cell[i][j].getText() + "");
+                if (cell != null){
+                    final TextView curCell = cell[i][j];
+                    curCell.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+//                            curCell.setBackgroundColor(Color.GRAY);
+//                            Toast.makeText(MainActivity.this, curCell.getText(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
             }
         }
     }
@@ -42,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
                 logCat("id "+ row+col+": "+id);
                 if (cell != null) {
                     cell[row][col] = (TextView) findViewById(id);
+                    cell[row][col].setText("");
                     logCat("success: "+row+","+col);
                 }
             }
