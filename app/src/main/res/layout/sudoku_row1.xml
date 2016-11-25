@@ -1,10 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--first row of the sudoku-->
+<?xml version="1.0" encoding="utf-8"?><!--first row of the sudoku-->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/ll_row1"
     android:layout_width="match_parent"
-    android:layout_height="0px"
-    android:layout_weight="1"
+    android:layout_height="match_parent"
     android:orientation="horizontal">
 
     <TextView
@@ -12,6 +10,7 @@
         android:layout_width="0px"
         android:layout_height="match_parent"
         android:layout_weight="1"
+        android:background="@drawable/black"
         android:gravity="center"
         android:text="11" />
 
@@ -20,6 +19,7 @@
         android:layout_width="0px"
         android:layout_height="match_parent"
         android:layout_weight="1"
+        android:background="@drawable/black"
         android:gravity="center"
         android:text="12" />
 
@@ -28,6 +28,7 @@
         android:layout_width="0px"
         android:layout_height="match_parent"
         android:layout_weight="1"
+        android:background="@drawable/black"
         android:gravity="center"
         android:text="13" />
 
@@ -36,6 +37,7 @@
         android:layout_width="0px"
         android:layout_height="match_parent"
         android:layout_weight="1"
+        android:background="@drawable/black"
         android:gravity="center"
         android:text="14" />
 

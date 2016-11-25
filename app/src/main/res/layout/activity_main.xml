@@ -12,6 +12,7 @@
     tools:context="com.example.android.ownsudoku.MainActivity">
 
     <LinearLayout
+        android:background="@drawable/black"
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="200dp"
@@ -26,48 +27,86 @@
             android:orientation="horizontal">
 
             <TextView
-                android:text="11"
-                android:gravity="center"
                 android:id="@+id/cell11"
-                android:layout_weight="1"
                 android:layout_width="0px"
-                android:layout_height="match_parent" />
-            <TextView
-                android:text="11"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/black"
                 android:gravity="center"
+                android:text="11" />
+
+            <TextView
                 android:id="@+id/cell12"
-                android:layout_weight="1"
                 android:layout_width="0px"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/black"
+                android:gravity="center"
+                android:text="12" />
 
             <TextView
-                android:text="11"
-                android:gravity="center"
                 android:id="@+id/cell13"
-                android:layout_weight="1"
                 android:layout_width="0px"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/black"
+                android:gravity="center"
+                android:text="13" />
 
             <TextView
-                android:text="11"
-                android:gravity="center"
                 android:id="@+id/cell14"
-                android:layout_weight="1"
                 android:layout_width="0px"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/black"
+                android:gravity="center"
+                android:text="14" />
 
         </LinearLayout>
 
         <!--2nd row-->
-        <include layout="@layout/sudoku_row2"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0px"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <include
+                layout="@layout/sudoku_row2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+
 
         <!--3rd row-->
-        <include layout="@layout/sudoku_row3"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0px"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <include
+                layout="@layout/sudoku_row3"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
 
         <!--4th row-->
-        <include layout="@layout/sudoku_row4"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0px"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <include
+                layout="@layout/sudoku_row4"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
 
     </LinearLayout>
+
+
 
 
 </LinearLayout>
