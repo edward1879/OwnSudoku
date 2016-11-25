@@ -22,7 +22,9 @@ public class MainActivity extends AppCompatActivity {
     Button btn_del;
 
 
-    public static final String easyQuestion = "1040040000200203";
+    public static final String[] easyQuestion = {"1040040000200203"};
+    public static final String[] hardQuestion = {"2003004002001000"};
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
     private void setUpUI() {
         bindTextViews();
         bindNumberButtons();
-        setUpQuestions(easyQuestion);
+        setUpQuestions(hardQuestion[0]);
     }
 
 
